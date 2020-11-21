@@ -6,10 +6,7 @@ from validation import validate_any
 
 def validate(schemas, obj):
     if 'event' not in obj:
-        return [(
-            'JSON не имеет аттрибута event. ',
-            'Невозможно определить соответствующую JSON схему.'
-        )]
+        return ['JSON не имеет аттрибута event. Невозможно определить JSON схему.']
 
     schema_name = obj['event']
     if schema_name not in schemas:
@@ -30,11 +27,11 @@ def convert_errors(arr):
         if type(row) == str:
             errors.append(row)
         if type(row) == list:
-            errors.extend(['   ' + x for x in convert_errors(row)])
+            errors.extend(['-->' + x for x in convert_errors(row)])
         if type(row) == dict:
             for key in row:
                 errors.append(key)
-                errors.extend(['   ' + x for x in convert_errors(row[key])])
+                errors.extend(['-->' + x for x in convert_errors(row[key])])
 
     return errors
 
@@ -84,7 +81,7 @@ if __name__ == "__main__":
                         )
 
                     errors = convert_errors(validate(schemas, data))
-                    writer.writelines([f'   {str(x)}<br/>\n' for x in errors])
+                    writer.writelines([f'-->{str(x)}<br/>\n' for x in errors])
 
             except json.JSONDecodeError:
-                writer.write('   JSON файл имеет некорректную структуру.<br/>\n')
+                writer.write('-->JSON файл имеет некорректную структуру.<br/>\n')

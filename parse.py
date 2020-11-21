@@ -46,7 +46,7 @@ if __name__ == "__main__":
     path_to_schemas = os.path.join(path_to_task_folder, 'schema')
 
     with open('README.md', 'w', encoding='utf-8') as writer:
-        writer.write('Загружаем JSON схемы\n')
+        writer.write('Загружаем JSON схемы<br/>\n')
 
         schemas = {}
         for filename in os.listdir(path_to_schemas):
@@ -59,14 +59,14 @@ if __name__ == "__main__":
                 ) as reader:
                     data = json.load(reader)
                     schemas[filename.split('.')[0]] = data
-                    writer.write(' - OK\n')
+                    writer.write(' - OK<br/>\n')
             except json.JSONDecodeError:
-                writer.write(' - FAIL\n')
+                writer.write(' - FAIL<br/>\n')
 
-        writer.write('\n')
+        writer.write('<br/>\n')
 
         for filename in os.listdir(path_to_events):
-            writer.write(f'#### {filename}\n')
+            writer.write(f'#### {filename}<br/>\n')
             try:
                 with open(
                     os.path.join(path_to_events, filename),
@@ -84,7 +84,7 @@ if __name__ == "__main__":
                         )
 
                     errors = convert_errors(validate(schemas, data))
-                    writer.writelines([f'   {str(x)}\n' for x in errors])
+                    writer.writelines([f'   {str(x)}<br/>\n' for x in errors])
 
             except json.JSONDecodeError:
-                writer.write('   JSON файл имеет некорректную структуру.\n')
+                writer.write('   JSON файл имеет некорректную структуру.<br/>\n')
